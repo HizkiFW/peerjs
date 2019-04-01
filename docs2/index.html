@@ -1,0 +1,366 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>PeerJS</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">PeerJS</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> PeerJS</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="peerjs-simple-peer-to-peer-with-webrtc">PeerJS: Simple peer-to-peer with WebRTC</h1>
+				<p><a href="#backers"><img src="https://opencollective.com/peer/backers/badge.svg" alt="Backers on Open Collective"></a>
+				<a href="#sponsors"><img src="https://opencollective.com/peer/sponsors/badge.svg" alt="Sponsors on Open Collective"></a> </p>
+				<p>PeerJS provides a complete, configurable, and easy-to-use peer-to-peer API built on top of WebRTC, supporting both data channels and media streams.</p>
+				<h3 id="http-peerjs-com"><a href="http://peerjs.com">http://peerjs.com</a></h3>
+				<h2 id="setup">Setup</h2>
+				<p><strong>Include the library</strong></p>
+				<p>  with modules:
+					<code>npm install peerjs</code> or <code>yarn add peerjs</code>
+				and the usage:</p>
+				<pre><code class="language-js">  <span class="hljs-keyword">import</span> Peer <span class="hljs-keyword">from</span> <span class="hljs-string">'peerjs'</span>;</code></pre>
+				<p><strong>Create a Peer</strong><br>Get a <a href="http://peerjs.com/peerserver">free API key</a>. Your id only needs to be unique to the namespace of your API key.</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">var</span> peer = <span class="hljs-keyword">new</span> Peer(<span class="hljs-string">'pick-an-id'</span>, {<span class="hljs-attr">key</span>: <span class="hljs-string">'myapikey'</span>});
+<span class="hljs-comment">// You can pick your own id or omit the id if you want to get a random one from the server.</span></code></pre>
+				<h2 id="data-connections">Data connections</h2>
+				<p><strong>Connect</strong></p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">var</span> conn = peer.connect(<span class="hljs-string">'another-peers-id'</span>);
+conn.on(<span class="hljs-string">'open'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  conn.send(<span class="hljs-string">'hi!'</span>);
+});</code></pre>
+				<p><strong>Receive</strong></p>
+				<pre><code class="language-javascript">peer.on(<span class="hljs-string">'connection'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">conn</span>) </span>{
+  conn.on(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+    <span class="hljs-comment">// Will print 'hi!'</span>
+    <span class="hljs-built_in">console</span>.log(data);
+  });
+});</code></pre>
+				<h2 id="media-calls">Media calls</h2>
+				<p><strong>Call</strong></p>
+				<pre><code class="language-javascript">navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+navigator.getUserMedia({<span class="hljs-attr">video</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">audio</span>: <span class="hljs-literal">true</span>}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">stream</span>) </span>{
+  <span class="hljs-keyword">var</span> call = peer.call(<span class="hljs-string">'another-peers-id'</span>, stream);
+  call.on(<span class="hljs-string">'stream'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">remoteStream</span>) </span>{
+    <span class="hljs-comment">// Show stream in some &lt;video&gt; element.</span>
+  });
+}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Failed to get local stream'</span> ,err);
+});
+</code></pre>
+				<p><strong>Answer</strong></p>
+				<pre><code class="language-javascript">navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+peer.on(<span class="hljs-string">'call'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">call</span>) </span>{
+  navigator.getUserMedia({<span class="hljs-attr">video</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">audio</span>: <span class="hljs-literal">true</span>}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">stream</span>) </span>{
+    call.answer(stream); <span class="hljs-comment">// Answer the call with an A/V stream.</span>
+    call.on(<span class="hljs-string">'stream'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">remoteStream</span>) </span>{
+      <span class="hljs-comment">// Show stream in some &lt;video&gt; element.</span>
+    });
+  }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Failed to get local stream'</span> ,err);
+  });
+});</code></pre>
+				<h2 id="run-tests">Run tests</h2>
+				<p><code>npm test</code></p>
+				<h2 id="links">Links</h2>
+				<h3 id="documentation-api-reference"><a href="http://peerjs.com/docs">Documentation / API Reference</a></h3>
+				<h3 id="webrtc-browser-compatibility-status"><a href="http://peerjs.com/status">WebRTC Browser compatibility status</a></h3>
+				<h3 id="peerserver"><a href="https://github.com/peers/peerjs-server">PeerServer</a></h3>
+				<h3 id="discuss-peerjs-on-our-google-group"><a href="https://groups.google.com/forum/?fromgroups#!forum/peerjs">Discuss PeerJS on our Google Group</a></h3>
+				<h3 id="changelog"><a href="https://github.com/peers/peerjs/blob/master/changelog.md">Changelog</a></h3>
+				<h2 id="contributors">Contributors</h2>
+				<p>This project exists thanks to all the people who contribute. [<a href="CONTRIBUTING.md">Contribute</a>].
+				<a href="graphs/contributors"><img src="https://opencollective.com/peer/contributors.svg?width=890&button=false" /></a></p>
+				<h2 id="backers">Backers</h2>
+				<p>Thank you to all our backers! [<a href="https://opencollective.com/peer#backer">Become a backer</a>]</p>
+				<p><a href="https://opencollective.com/peer/backer/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/0/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/1/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/2/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/3/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/4/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/4/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/5/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/5/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/6/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/6/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/7/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/7/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/8/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/8/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/9/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/9/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/10/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/10/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/11/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/11/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/12/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/12/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/13/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/13/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/14/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/14/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/15/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/15/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/16/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/16/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/17/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/17/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/18/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/18/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/19/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/19/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/20/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/20/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/21/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/21/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/22/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/22/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/23/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/23/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/24/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/24/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/25/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/25/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/26/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/26/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/27/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/27/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/28/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/28/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/29/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/29/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/30/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/30/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/31/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/31/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/32/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/32/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/33/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/33/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/34/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/34/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/35/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/35/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/36/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/36/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/37/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/37/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/38/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/38/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/39/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/39/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/40/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/40/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/41/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/41/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/42/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/42/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/43/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/43/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/44/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/44/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/45/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/45/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/46/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/46/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/47/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/47/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/48/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/48/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/49/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/49/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/50/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/50/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/51/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/51/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/52/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/52/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/53/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/53/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/54/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/54/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/55/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/55/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/56/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/56/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/57/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/57/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/58/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/58/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/59/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/59/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/60/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/60/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/61/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/61/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/62/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/62/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/63/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/63/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/64/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/64/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/65/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/65/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/66/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/66/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/67/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/67/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/68/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/68/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/69/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/69/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/70/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/70/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/71/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/71/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/72/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/72/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/73/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/73/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/74/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/74/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/75/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/75/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/76/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/76/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/77/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/77/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/78/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/78/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/79/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/79/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/80/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/80/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/81/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/81/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/82/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/82/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/83/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/83/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/84/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/84/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/85/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/85/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/86/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/86/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/87/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/87/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/88/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/88/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/89/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/89/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/90/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/90/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/91/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/91/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/92/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/92/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/93/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/93/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/94/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/94/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/95/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/95/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/96/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/96/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/97/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/97/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/98/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/98/avatar.svg?requireActive=false"></a>
+					<a href="https://opencollective.com/peer/backer/99/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/99/avatar.svg?requireActive=false"></a>
+				<a href="https://opencollective.com/peer/backer/100/website?requireActive=false" target="_blank"><img src="https://opencollective.com/peer/backer/100/avatar.svg?requireActive=false"></a></p>
+				<h2 id="sponsors">Sponsors</h2>
+				<p>Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [<a href="https://opencollective.com/peer#sponsor">Become a sponsor</a>]</p>
+				<p><a href="https://opencollective.com/peer/sponsor/0/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/0/avatar.svg"></a>
+					<a href="https://opencollective.com/peer/sponsor/1/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/1/avatar.svg"></a>
+					<a href="https://opencollective.com/peer/sponsor/2/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/2/avatar.svg"></a>
+					<a href="https://opencollective.com/peer/sponsor/3/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/3/avatar.svg"></a>
+					<a href="https://opencollective.com/peer/sponsor/4/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/4/avatar.svg"></a>
+					<a href="https://opencollective.com/peer/sponsor/5/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/5/avatar.svg"></a>
+					<a href="https://opencollective.com/peer/sponsor/6/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/6/avatar.svg"></a>
+					<a href="https://opencollective.com/peer/sponsor/7/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/7/avatar.svg"></a>
+					<a href="https://opencollective.com/peer/sponsor/8/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/8/avatar.svg"></a>
+				<a href="https://opencollective.com/peer/sponsor/9/website" target="_blank"><img src="https://opencollective.com/peer/sponsor/9/avatar.svg"></a></p>
+				<h2 id="license">License</h2>
+				<p>PeerJS is licensed under the <a href="https://tldrlegal.com/l/mit">MIT License</a>.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_adapter_.html">"adapter"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_api_.html">"api"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_baseconnection_.html">"baseconnection"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_dataconnection_.html">"dataconnection"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_enums_.html">"enums"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_exports_.html">"exports"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_logger_.html">"logger"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_mediaconnection_.html">"mediaconnection"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_negotiator_.html">"negotiator"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_peer_.html">"peer"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_servermessage_.html">"servermessage"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_socket_.html">"socket"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_util_.html">"util"</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

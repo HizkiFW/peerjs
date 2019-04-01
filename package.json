@@ -13,7 +13,8 @@
     "build": "parcel build lib/exports.ts -d dist --out-file peerjs.min.js",
     "prepublish": "npm run build",
     "postinstall": "opencollective-postinstall",
-    "test": "mocha -r ts-node/register -r jsdom-global/register test/**/*.ts"
+    "test": "mocha -r ts-node/register -r jsdom-global/register test/**/*.ts",
+    "docs": "typedoc --out docs2 --excludeNotExported --name PeerJS --exclude test/**"
   },
   "release": {
     "branch": "master"
@@ -45,6 +46,8 @@
     "opencollective": "^1.0.3",
     "opencollective-postinstall": "^2.0.0",
     "reliable": "git+https://github.com/michelle/reliable.git",
+    "tsdoc": "0.0.4",
+    "typedoc": "^0.14.2",
     "webrtc-adapter": "^7.2.1"
   },
   "collective": {
