@@ -55,7 +55,7 @@ navigator.mediaDevices.getUserMedia({video: true, audio: true}, (stream) => {
 }, (err) => {
   console.error('Failed to get local stream', err);
 });
-
+https://peerjs.com/docs.html
 ```
 **Answer**
 ```javascript
@@ -79,7 +79,7 @@ npm test
 
 ## Links
 
-### [Documentation / API Reference](https://peerjs.com/docs)
+### [Documentation / API Reference](https://peerjs.com/docs.html)
 
 ### [PeerServer](https://github.com/peers/peerjs-server)
 
